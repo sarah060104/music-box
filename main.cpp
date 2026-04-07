@@ -1,7 +1,10 @@
 #include <iostream>
+#include <MainWindow.h>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    MainWindow mainWindow;
+    mainWindow.init();
+    mainWindow.run();
     return 0;
 }
 

@@ -9,10 +9,59 @@ project(beatbox_61601)
 # core concepts taught in 4DEV, and is widely supported.
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(bbx-61601 main.cpp)
+add_executable(bbx-61601 main.cpp
+        MainWindow.h
+        MainWindow.cpp
+
+        libraries/imgui/imgui.cpp
+        libraries/imgui/imgui_demo.cpp
+        libraries/imgui/imgui_draw.cpp
+        libraries/imgui/imgui_widgets.cpp
+        libraries/imgui/imgui_tables.cpp
+        libraries/imgui/backends/imgui_impl_sdl3.cpp
+        libraries/imgui/backends/imgui_impl_sdlrenderer3.cpp
+)
 
 include_directories( PRIVATE
         "."
-        "libraries/imgui"
-        "libraries/imgui/backend"
 )
+
+include_directories(
+        "libraries/imgui/backends"
+        "libraries/imgui"
+        "libraries/portaudio/include"
+        "libraries/sdl/include"
+)
+if (APPLE)
+    set(CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/macos/SDL3.framework")
+    target_link_libraries(bbx-61601 PRIVATE
+            "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/macos/SDL3.framework/Versions/A/SDL3"
+            "-framework AudioToolbox"
+            "-framework CoreAudio"
+            "-framework Carbon"
+            "${CMAKE_SOURCE_DIR}/libraries/portaudio/lib/macos/libportaudio.a")
+elseif (WIN32)
+    target_link_libraries(bbx-61601 PRIVATE
+            "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/win32/sdl3.dll"
+            "${CMAKE_SOURCE_DIR}/libraries/portaudio/lib/win32/portaudio_x64.dll"
+    )
+
+    add_custom_command(TARGET bbx-61601 POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/libraries/sdl/lib/win32/sdl3.dll"
+            "$<TARGET_FILE_DIR:bbx-61601>"
+    )
+    add_custom_command(TARGET bbx-61601 POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/libraries/portaudio/lib/win32/portaudio_x64.dll"
+            "$<TARGET_FILE_DIR:bbx-61601>"
+    )
+elseif (UNIX)
+    target_link_libraries(bbx-61601 PRIVATE
+            "-lGL"
+            "-ldl"
+            "-ljack"
+            "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/linux-x86_64/libSDL3.a"
+            "${CMAKE_SOURCE_DIR}/libraries/portaudio/lib/linux-x86_64/libportaudio.a")
+endif ()
+
