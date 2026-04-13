@@ -25,7 +25,7 @@ void MainWindow::init() {
     }
     // Create window with SDL_Renderer graphics context
     Uint32 window_flags = SDL_WINDOW_HIDDEN;
-    window = SDL_CreateWindow("", 384, 268, window_flags);
+    window = SDL_CreateWindow("", 1200,300 , window_flags);
     if (nullptr == window) {
         SDL_Log("Error: SDL_CreateWindow(): %s\n", SDL_GetError());
         return;
@@ -107,15 +107,145 @@ void MainWindow::run() {
     SDL_Quit();
 }
 
-void MainWindow::draw(){
-    ImGui::Begin("My Window");
-    ImGui::Text("Hello Imgui");
-    // button
-    if (ImGui::Button("Click here")) {
-        // this code is called when the button is clicked
-        std::cout << "Bouton cliqué!" << std::endl;
-    }
+void MainWindow::draw()
+{
+    const float SCREEN_W   = 1200.0f;
+    const float SCREEN_H   = 800.0f;
+    const float TOP_H      = 40.0f;
+    const float TITLE_H   = 20.0f;
+    const float CONTENT_H  = SCREEN_H - TOP_H- TITLE_H;
+    const float PARAMS_W   = 250.0f;
+    const float SEQ_W      = SCREEN_W - PARAMS_W;
+
+    const int NUM_TRACKS = 4;
+    const int NUM_STEPS  = 16;
+    static bool  steps[NUM_TRACKS][NUM_STEPS] = {};
+    static float volumes[NUM_TRACKS]          = {1.0f, 1.0f, 1.0f, 1.0f};
+    static bool  mutes[NUM_TRACKS]            = {};
+    static bool  reverse  = false;
+    static bool  delay    = false;
+    static float delayTime = 0.0f;
+    static float delayMix  = 0.0f;
+
+    static int selectedTrack = 0;
+
+    bool sampleLoaded = false; //TODO pointeur sample
+
+
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImVec2(SCREEN_W, SCREEN_H));
+    ImGui::Begin("DrumMachine", nullptr,
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove   );
+
+
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImVec2(SCREEN_W, TOP_H));
+    ImGui::Begin("BPMBar", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize   |
+        ImGuiWindowFlags_NoMove);
+
+        ImGui::Button("Play");
+        ImGui::SameLine();
+        ImGui::Button("-");
+        ImGui::SameLine();
+        ImGui::Text("BPM :");
+        ImGui::SameLine();
+        ImGui::Text("nb");
+        ImGui::SameLine();
+        ImGui::Button("+");
+
+    ImGui::End();
+
+    ImGui::SetNextWindowPos(ImVec2(0, TOP_H));
+    ImGui::SetNextWindowSize(ImVec2(SEQ_W, CONTENT_H));
+    ImGui::Begin("Sequencer", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize   |
+        ImGuiWindowFlags_NoMove);
+
+
+
+        for (int t = 0; t < NUM_TRACKS; t++)
+        {
+
+            ImGui::PushID(t);
+
+            // Bouton track sélectionnable (même taille que les steps)
+            ImGui::PushStyleColor(ImGuiCol_Header,        ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.3f, 0.5f, 0.9f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderActive,  ImVec4(0.1f, 0.3f, 0.7f, 1.0f));
+
+            char label[32];
+            snprintf(label, sizeof(label), "Track %d", t + 1);
+            if (ImGui::Selectable(label, selectedTrack == t, 0, ImVec2(70, 36)))
+                selectedTrack = t;
+
+            ImGui::PopStyleColor(3);
+            ImGui::SameLine();
+
+            for (int s = 0; s < NUM_STEPS; s++)
+            {
+                ImGui::PushID(s);
+                ImGui::PushStyleColor(ImGuiCol_Button, steps[t][s]
+                    ? ImVec4(1.0f, 0.85f, 0.0f, 1.0f)
+                    : ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
+
+                if (ImGui::Button("##step", ImVec2(36, 36)))
+                    steps[t][s] = !steps[t][s];
+
+                ImGui::PopStyleColor();
+                ImGui::SameLine();
+                ImGui::PopID();
+            }
+
+            ImGui::PushStyleColor(ImGuiCol_FrameBg,    ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
+            ImGui::SetNextItemWidth(60);
+            ImGui::SliderFloat("##vol", &volumes[t], 0.0f, 2.0f, "%.3f");
+            ImGui::PopStyleColor(2);
+            ImGui::SameLine();
+
+            ImGui::PushStyleColor(ImGuiCol_Button, mutes[t]
+                ? ImVec4(0.8f, 0.2f, 0.2f, 1.0f)
+                : ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
+            if (ImGui::Button("M", ImVec2(24, 36)))
+                mutes[t] = !mutes[t];
+            ImGui::PopStyleColor();
+
+            ImGui::PopID();
+        }
+
+    ImGui::End();
+
+
+    ImGui::SetNextWindowPos(ImVec2(SEQ_W, TOP_H));
+    ImGui::SetNextWindowSize(ImVec2(PARAMS_W, CONTENT_H));
+    ImGui::Begin("TrackParams", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize   |
+        ImGuiWindowFlags_NoMove);
+
+        ImGui::Text("Track %d", selectedTrack + 1);
+        (!sampleLoaded) ? ImGui::Text("(no sample)"): ImGui::Text("Nom du sample");
+
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
+        if (ImGui::Button("Load sample")) { /* open file dialog */ }
+        ImGui::PopStyleColor();
+
+        ImGui::Checkbox("Reverse", &reverse);
+        ImGui::Checkbox("Delay",   &delay);
+
+        ImGui::PushStyleColor(ImGuiCol_FrameBg,    ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
+        ImGui::SetNextItemWidth(100);
+        ImGui::SliderFloat("Delay time", &delayTime, 0.0f, 1.0f, "%.3f");
+        ImGui::SetNextItemWidth(100);
+        ImGui::SliderFloat("Delay mix",  &delayMix,  0.0f, 1.0f, "%.3f");
+        ImGui::PopStyleColor(2);
+
+    ImGui::End();
+
     ImGui::End();
 }
-
-
