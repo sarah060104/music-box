@@ -13,6 +13,9 @@ add_executable(bbx-61601 main.cpp
         MainWindow.h
         MainWindow.cpp
 
+        AudioGenerator.cpp
+        AudioGenerator.h
+
         libraries/imgui/imgui.cpp
         libraries/imgui/imgui_demo.cpp
         libraries/imgui/imgui_draw.cpp
