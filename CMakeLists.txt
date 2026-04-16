@@ -23,7 +23,15 @@ add_executable(bbx-61601 main.cpp
         libraries/imgui/imgui_tables.cpp
         libraries/imgui/backends/imgui_impl_sdl3.cpp
         libraries/imgui/backends/imgui_impl_sdlrenderer3.cpp
+        AudioPlayer.cpp
+        AudioPlayer.h
+        AudioFileReader.cpp
+        AudioFileReader.h
 )
+
+
+find_package(fmt REQUIRED)
+target_link_libraries( bbx-61601 PRIVATE fmt::fmt)
 
 include_directories( PRIVATE
         "."

@@ -1,9 +1,15 @@
 #include <iostream>
 #include "AudioGenerator.h"
 
+#include "AudioPlayer.h"
+
 constexpr int FRAMES_PER_BUFFER {256};
 constexpr int SAMPLE_RATE {44100};
 
+
+/**
+ * TODO regler issue avec Process finished with exit code 139 (interrupted by signal 11:SIGSEGV), vient de init
+ */
 void AudioGenerator::init() {
 
     PaError errorInit = Pa_Initialize();
@@ -40,7 +46,11 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
                                   void *userData) {
 
     // DO STUFF WITH OUTPUTBUFFER
-    // ...
+    // ... TODO méthode callback
+
+    auto* player = static_cast<AudioPlayer*>(userData);
+    float* out = static_cast<float*>(outputBuffer);
+    player->getNextFrames(out, framesPerBuffer);
 
     return 0;
 }
