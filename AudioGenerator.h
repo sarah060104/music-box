@@ -1,6 +1,9 @@
 #ifndef SIMPLE_SYNTH_AUDIOGENERATOR_H
 #define SIMPLE_SYNTH_AUDIOGENERATOR_H
 
+#include <array>
+
+#include "AudioPlayer.h"
 #include "portaudio.h"
 
 class AudioGenerator {
@@ -14,7 +17,9 @@ private:
                               PaStreamCallbackFlags statusFlags,
                               void *userData );
 
-    double currentTimeInSeconds {0.0};
+    std::array<AudioPlayer,4>;
+    std::array<float, 4>       volumes = {1,1,1,1};
+    std::array<bool,  4>       mutes   = {};
 
 };
 

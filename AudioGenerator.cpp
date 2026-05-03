@@ -7,9 +7,7 @@ constexpr int FRAMES_PER_BUFFER {256};
 constexpr int SAMPLE_RATE {44100};
 
 
-/**
- * TODO regler issue avec Process finished with exit code 139 (interrupted by signal 11:SIGSEGV), vient de init
- */
+
 void AudioGenerator::init() {
 
     PaError errorInit = Pa_Initialize();
@@ -29,7 +27,7 @@ void AudioGenerator::init() {
                                        SAMPLE_RATE,
                                        FRAMES_PER_BUFFER,
                                        audioCallback,
-                                       nullptr );
+                                        this ); //TODO pointeur vers donnée
 
     errorStream = Pa_StartStream( stream );
     if( errorStream != paNoError ) {
@@ -45,12 +43,18 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
                                   PaStreamCallbackFlags statusFlags,
                                   void *userData) {
 
-    // DO STUFF WITH OUTPUTBUFFER
-    // ... TODO méthode callback
 
-    auto* player = static_cast<AudioPlayer*>(userData);
-    float* out = static_cast<float*>(outputBuffer);
-    player->getNextFrames(out, framesPerBuffer);
+    // buffer temporaire par piste
+    float trackBuf[256 * 2] = {};
+
+    // pour l'instant : juste player[0] en test
+    engine->players[0].process(trackBuf, framesPerBuffer);
+
+    // copier dans out
+    for (int i = 0; i < (int)framesPerBuffer * 2; i++)
+        std::ios_base::out[i] = trackBuf[i];
+
+    return paContinue;
 
     return 0;
 }
