@@ -1,29 +1,19 @@
 #include "AudioPlayer.h"
 
-#include <algorithm>
 #include <iostream>
 
 #include "AudioFileReader.h"
 #include <fmt/core.h>
 
 
-void AudioPlayer::loadWav(const std::string& path) {
-    int channel;
-    AudioFileReader::loadFile(path, 44100, buffer, channel );
+AudioPlayer::AudioPlayer() {
 
-    position = 0;
-    playing = false;
 }
 
 void AudioPlayer::play() {
     if (buffer.empty()) return;
 
     playing = true;
-
-
-    for (const auto& sample : buffer) {
-        std::cout << fmt::format("{:6.4f}", applyVolumeToSample(sample)) << std::endl;
-    }
 
 
     position = reverse ? buffer.size() - 1 : 0;
@@ -33,42 +23,42 @@ void AudioPlayer::stop() {
     playing = false;
 }
 
-
-void AudioPlayer::setVolume(float v) {
-    volume = std::clamp(v, 0.0f, 1.0f);
+void AudioPlayer::setReverse(bool reversed) {
+    reverse = reversed;
 }
 
-void AudioPlayer::setReverse(bool r) {
-    reverse = r;
+void AudioPlayer::loadWav(const std::string& path) {
+    AudioFileReader::loadFile(path, 44100, buffer, channels);
 }
 
-void AudioPlayer::getNextFrames(float* out, int numFrames) {
 
-    for (int i = 0; i < numFrames; i++) {
+void AudioPlayer::trigger() {
+    if (buffer.empty()) return;
+    position = reverse ? (int)buffer.size() - 1 : 0;
+    playing = true;
+}
 
-        if (!playing || buffer.empty()) {
-            out[i] = 0.0f;
+void AudioPlayer::process(float* out, int numFrames) {
+    for (int f = 0; f < numFrames; f++) {
+        if (!playing) {
+            out[f * 2]     = 0.0f;
+            out[f * 2 + 1] = 0.0f;
+            continue;
         }
 
-        float sample = buffer[position];
-
-        out[i] = applyVolumeToSample(sample);
-
-        if (reverse) {
-            position--;
+        if (channels == 2) {
+            out[f * 2]     = buffer[position * 2];
+            out[f * 2 + 1] = buffer[position * 2 + 1];
         } else {
-            position++;
+            float s = buffer[position];
+            out[f * 2]     = s;
+            out[f * 2 + 1] = s;
         }
 
-        if (position < 0 || position >= static_cast<int>(buffer.size())) {
-            playing = false;
-        }
+        position += reverse ? -1 : 1;
+
+        bool ended = reverse ? position < 0
+                             : position >= (int)buffer.size() / channels;
+        if (ended) playing = false;
     }
 }
-
-
-float AudioPlayer::applyVolumeToSample(float sample) const {
-    using std::max, std::min;
-    return max(-1.0f, min(1.0f, sample * volume));
-}
-

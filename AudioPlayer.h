@@ -10,15 +10,20 @@
 class AudioPlayer {
 
 public:
-    void loadWav(const std::string& path);
 
     void play();
     void stop();
 
-    void setVolume(float v);
-    void setReverse(bool r);
+    void setReverse(bool reversed);
+    AudioPlayer ();
 
-    void getNextFrames(float* out, int numFrames);
+
+    void process(float* outputBuffer, int nbframes);
+    void loadWav(const std::string& path);
+    void trigger();
+
+    bool isPlaying();
+    int getChannels();
 
 private:
     std::vector<float> buffer;
@@ -26,10 +31,10 @@ private:
     int position = 0;
     bool playing = false;
     bool reverse = false;
+    int channels = 1;
 
     float volume = 1.0f;
 
-    float applyVolumeToSample(float sample) const;
 };
 
 
