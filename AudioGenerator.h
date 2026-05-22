@@ -5,6 +5,7 @@
 
 #include "AudioPlayer.h"
 #include "portaudio.h"
+#include "Sequencer.h"
 
 class AudioGenerator {
 public:
@@ -18,9 +19,7 @@ private:
                               const PaStreamCallbackTimeInfo* timeInfo,
                               PaStreamCallbackFlags statusFlags,
                               void *userData );
-
-
-
+    Sequencer sequencer;
 };
 
 

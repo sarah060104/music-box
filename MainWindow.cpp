@@ -203,7 +203,7 @@ void MainWindow::draw()
             ImGui::PushStyleColor(ImGuiCol_FrameBg,    ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
             ImGui::SetNextItemWidth(60);
-            ImGui::SliderFloat("##vol", &volumes[t], 0.0f, 2.0f, "%.3f");
+            ImGui::SliderFloat("##vol", &volumes[t], 0.0f, 1.0f, "%.3f");
             ImGui::PopStyleColor(2);
             ImGui::SameLine();
 

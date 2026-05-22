@@ -31,7 +31,7 @@ private:
     int position = 0;
     bool playing = false;
     bool reverse = false;
-    int channels = 1;
+    int channels;
 
     float volume = 1.0f;
 

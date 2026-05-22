@@ -9,6 +9,7 @@ struct RhythmBoxParams {
     bool grid[4][16];
     int currentStep = 1;
     std::vector<bool> muted = {false, false, false, false} ;
+    std::vector<std::string> wavPath;
 
 
 

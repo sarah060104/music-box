@@ -6,7 +6,7 @@
 int main() {
 
     AudioGenerator audioGenerator;
-    audioGenerator.players[0].loadWav("../../samplepack/Kick1.wav");
+    audioGenerator.players[0].loadWav("../../samplepack/Hihat1.wav");
     audioGenerator.init();
 
     audioGenerator.players[0].trigger();

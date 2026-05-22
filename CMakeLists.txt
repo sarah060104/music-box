@@ -32,6 +32,8 @@ add_executable(bbx-61601 main.cpp
         Controller.h
         RhythmBoxParams.cpp
         RhythmBoxParams.h
+        Sequencer.cpp
+        Sequencer.h
 )
 
 find_package(fmt REQUIRED)
@@ -48,13 +50,16 @@ include_directories(
         "libraries/sdl/include"
 )
 if (APPLE)
-    set(CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/macos/SDL3.framework")
+    set(SDL3_FW "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/macos/SDL3.framework")
+
     target_link_libraries(bbx-61601 PRIVATE
-            "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/macos/SDL3.framework/Versions/A/SDL3"
+            "${SDL3_FW}/Versions/A/SDL3"
             "-framework AudioToolbox"
             "-framework CoreAudio"
             "-framework Carbon"
             "${CMAKE_SOURCE_DIR}/libraries/portaudio/lib/macos/libportaudio.a")
+    target_link_options(bbx-61601 PRIVATE
+            "-Wl,-rpath,${CMAKE_SOURCE_DIR}/libraries/sdl/lib/macos")
 
 elseif (WIN32)
     target_link_libraries(bbx-61601 PRIVATE

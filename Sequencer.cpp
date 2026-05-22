@@ -3,7 +3,7 @@
 
 int Sequencer::advance(int numFrames, int sampleRate, int bpm) {
     double secondsElapsed = (double)numFrames / sampleRate;
-    double beatsElapsed   = (secondsElapsed * 60 )/ bpm;
+    double beatsElapsed   = (secondsElapsed * bpm )/ 60;
 
     beatAccum += beatsElapsed;
 

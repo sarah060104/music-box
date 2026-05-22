@@ -48,6 +48,16 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
 
     float trackBuf[256 * 2] = {};
 
+    int newStep = engine->sequencer.advance(
+        framesPerBuffer, SAMPLE_RATE, 90
+    );
+
+    if (newStep != -1) {
+        if (newStep % 4 == 0) {
+            engine->players[0].trigger();
+        }
+    }
+
     engine->players[0].process(trackBuf, framesPerBuffer);
 
     for (int i = 0; i < (int)framesPerBuffer * 2; i++)
