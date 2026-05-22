@@ -43,19 +43,18 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
                                   PaStreamCallbackFlags statusFlags,
                                   void *userData) {
 
+    auto* engine = static_cast<AudioGenerator*>(userData);  // récupère this
+    auto* outB   = static_cast<float*>(outputBuffer);
 
-    // buffer temporaire par piste
     float trackBuf[256 * 2] = {};
 
-    // pour l'instant : juste player[0] en test
     engine->players[0].process(trackBuf, framesPerBuffer);
 
-    // copier dans out
     for (int i = 0; i < (int)framesPerBuffer * 2; i++)
-        std::ios_base::out[i] = trackBuf[i];
+        outB[i] = trackBuf[i];
 
     return paContinue;
 
-    return 0;
+
 }
 

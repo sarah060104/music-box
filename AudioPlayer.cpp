@@ -7,7 +7,6 @@
 
 
 AudioPlayer::AudioPlayer() {
-
 }
 
 void AudioPlayer::play() {
@@ -39,7 +38,7 @@ void AudioPlayer::trigger() {
 }
 
 void AudioPlayer::process(float* out, int numFrames) {
-    for (int f = 0; f < numFrames; f++) {
+for (int f = 0; f < numFrames; f++) {
         if (!playing) {
             out[f * 2]     = 0.0f;
             out[f * 2 + 1] = 0.0f;
@@ -59,6 +58,9 @@ void AudioPlayer::process(float* out, int numFrames) {
 
         bool ended = reverse ? position < 0
                              : position >= (int)buffer.size() / channels;
-        if (ended) playing = false;
+        if (ended) {
+            position = 0;
+            //playing = false;
+        }
     }
 }

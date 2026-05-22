@@ -5,7 +5,13 @@
 
 int main() {
 
- MainWindow mainWindow;
+    AudioGenerator audioGenerator;
+    audioGenerator.players[0].loadWav("../../samplepack/Kick1.wav");
+    audioGenerator.init();
+
+    audioGenerator.players[0].trigger();
+
+    MainWindow mainWindow;
     mainWindow.init();
     mainWindow.run();
     return 0;

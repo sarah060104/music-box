@@ -1,5 +1,6 @@
 # More recent versions of CMake exist.
 # Version 3.20 is chosen here to ensure the examples work everywhere.
+
 cmake_minimum_required(VERSION 3.20)
 
 project(beatbox_61601)
@@ -27,8 +28,11 @@ add_executable(bbx-61601 main.cpp
         AudioPlayer.h
         AudioFileReader.cpp
         AudioFileReader.h
+        Controller.cpp
+        Controller.h
+        RhythmBoxParams.cpp
+        RhythmBoxParams.h
 )
-
 
 find_package(fmt REQUIRED)
 target_link_libraries( bbx-61601 PRIVATE fmt::fmt)
@@ -51,6 +55,7 @@ if (APPLE)
             "-framework CoreAudio"
             "-framework Carbon"
             "${CMAKE_SOURCE_DIR}/libraries/portaudio/lib/macos/libportaudio.a")
+
 elseif (WIN32)
     target_link_libraries(bbx-61601 PRIVATE
             "${CMAKE_SOURCE_DIR}/libraries/sdl/lib/win32/sdl3.dll"
