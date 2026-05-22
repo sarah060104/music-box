@@ -11,6 +11,7 @@ private:
     void draw();
     SDL_Window* window { nullptr };
     SDL_Renderer* renderer { nullptr };
+
 };
 
 #endif //TESTINSTRUCT_MAINWINDOW_H
