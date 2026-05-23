@@ -2,11 +2,14 @@
 #include "AudioGenerator.h"
 
 #include "AudioPlayer.h"
+#include "RhythmBoxParams.h"
 
 constexpr int FRAMES_PER_BUFFER {256};
 constexpr int SAMPLE_RATE {44100};
 
 
+AudioGenerator::AudioGenerator(Controller& controller)
+    : controller(controller) {}
 
 void AudioGenerator::init() {
 
@@ -29,6 +32,7 @@ void AudioGenerator::init() {
                                        audioCallback,
                                         this ); //TODO pointeur vers donnée
 
+
     errorStream = Pa_StartStream( stream );
     if( errorStream != paNoError ) {
         std::cerr << "PortAudio error in Pa_StartStream(): "
@@ -45,6 +49,9 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
 
     auto* engine = static_cast<AudioGenerator*>(userData);  // récupère this
     auto* outB   = static_cast<float*>(outputBuffer);
+
+    RhythmBoxParams snapshot = engine->controller.getRhythmBoxParams();
+
 
     float trackBuf[256 * 2] = {};
 

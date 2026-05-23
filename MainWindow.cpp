@@ -13,6 +13,10 @@
 #include "SDL3/SDL_render.h"
 #include "SDL3/SDL_video.h"
 
+
+MainWindow::MainWindow(Controller& controller)
+    : controller(controller) {}
+
 constexpr float FRAMERATE = 60.0f;
 constexpr std::chrono::duration<double, std::milli> TARGET_FRAMETIME(1000.0 / FRAMERATE);
 

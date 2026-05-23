@@ -4,12 +4,34 @@
 
 
 void Controller::setPlaying(bool playing) {
+    std::lock_guard<std::mutex> lock(mutex);
+
     params.playing = playing;
 }
 void Controller::setBpm(int bpm) {
+    std::lock_guard<std::mutex> lock(mutex);
     params.bpm = bpm;
 
 }
-void Controller::loadFile(std::string path) {
+
+
+void Controller::setStep(int track, int step, bool active) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.grid[track][step] = active;
+}
+
+void Controller::setMute(int track, bool mute) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.muted[track] = mute;
+}
+
+void Controller::registerFileName(int track, std::string path) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.wavPath[track] = path;
+}
+
+RhythmBoxParams Controller::getRhythmBoxParams() {
+    std::lock_guard<std::mutex> lock(mutex);
+    return params;  // copie
 }
 

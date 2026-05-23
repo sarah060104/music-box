@@ -9,11 +9,16 @@
 class Controller {
 
     RhythmBoxParams params;
+    std::mutex mutex;
 
 public:
     void setPlaying(bool playing);
-    void setBpm(int);
-    void loadFile(std::string);
+    void setBpm(int bpm);
+    void setStep(int track, int step, bool active);
+    void setMute(int track, bool mute);
+    void registerFileName(int track, std::string path);
+    RhythmBoxParams getRhythmBoxParams();
+
 };
 
 

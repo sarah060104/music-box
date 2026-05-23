@@ -2,18 +2,19 @@
 #include <MainWindow.h>
 
 #include "AudioGenerator.h"
+#include "Controller.h"
 
 int main() {
 
-    AudioGenerator audioGenerator;
-    audioGenerator.players[0].loadWav("../../samplepack/Hihat1.wav");
+    Controller controller;
+
+    AudioGenerator audioGenerator(controller);
     audioGenerator.init();
 
-    audioGenerator.players[0].trigger();
-
-    MainWindow mainWindow;
+    MainWindow mainWindow(controller);
     mainWindow.init();
     mainWindow.run();
+
     return 0;
 }
 
