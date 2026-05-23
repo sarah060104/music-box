@@ -113,6 +113,8 @@ void MainWindow::run() {
 
 void MainWindow::draw()
 {
+    RhythmBoxParams snapshot = controller.getRhythmBoxParams();
+
     const float SCREEN_W   = 1200.0f;
     const float SCREEN_H   = 800.0f;
     const float TOP_H      = 40.0f;
@@ -150,15 +152,15 @@ void MainWindow::draw()
         ImGuiWindowFlags_NoResize   |
         ImGuiWindowFlags_NoMove);
 
-        ImGui::Button("Play");
+    if (ImGui::Button(snapshot.playing ? "Stop" : "Play"))
+        controller.setPlaying(!snapshot.playing);
         ImGui::SameLine();
-        ImGui::Button("-");
+    if (ImGui::Button("-")) controller.setBpm(snapshot.bpm - 1);
         ImGui::SameLine();
-        ImGui::Text("BPM :");
+    ImGui::Text("BPM : %d", snapshot.bpm);
         ImGui::SameLine();
-        ImGui::Text("nb");
-        ImGui::SameLine();
-        ImGui::Button("+");
+    if (ImGui::Button("+")) controller.setBpm(snapshot.bpm + 1);
+
 
     ImGui::End();
 
@@ -176,7 +178,6 @@ void MainWindow::draw()
 
             ImGui::PushID(t);
 
-            // Bouton track sélectionnable (même taille que les steps)
             ImGui::PushStyleColor(ImGuiCol_Header,        ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.3f, 0.5f, 0.9f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_HeaderActive,  ImVec4(0.1f, 0.3f, 0.7f, 1.0f));
@@ -192,7 +193,8 @@ void MainWindow::draw()
             for (int s = 0; s < NUM_STEPS; s++)
             {
                 ImGui::PushID(s);
-                ImGui::PushStyleColor(ImGuiCol_Button, steps[t][s]
+                bool active = snapshot.grid[t][s];
+                ImGui::PushStyleColor(ImGuiCol_Button, active
                     ? ImVec4(1.0f, 0.85f, 0.0f, 1.0f)
                     : ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 

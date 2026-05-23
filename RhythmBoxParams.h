@@ -1,15 +1,17 @@
 #ifndef BEATBOX_61601_RHYTHMBOXPARAMS_H
 #define BEATBOX_61601_RHYTHMBOXPARAMS_H
 #include <vector>
+#include <array>
+#include <string>
 
 
 struct RhythmBoxParams {
     bool playing = false;
     int bpm = 120;
-    bool grid[4][16];
+    bool grid[4][16]={};
     int currentStep = 1;
-    std::vector<bool> muted = {false, false, false, false} ;
-    std::vector<std::string> wavPath;
+    std::array<bool, 4> muted ;
+    std::array<std::string, 4> wavPath;
 
 
 
