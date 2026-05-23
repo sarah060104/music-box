@@ -199,7 +199,7 @@ void MainWindow::draw()
                     : ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 
                 if (ImGui::Button("##step", ImVec2(36, 36)))
-                    steps[t][s] = !steps[t][s];
+                   controller.setStep(t, s, !active);
 
                 ImGui::PopStyleColor();
                 ImGui::SameLine();
@@ -213,12 +213,12 @@ void MainWindow::draw()
             ImGui::PopStyleColor(2);
             ImGui::SameLine();
 
-            ImGui::PushStyleColor(ImGuiCol_Button, mutes[t]
+            ImGui::PushStyleColor(ImGuiCol_Button, snapshot.muted[t]
                 ? ImVec4(0.8f, 0.2f, 0.2f, 1.0f)
                 : ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
             if (ImGui::Button("M", ImVec2(24, 36)))
-                mutes[t] = !mutes[t];
-            ImGui::PopStyleColor();
+                controller.setMute(t, !snapshot.muted[t]);
+                ImGui::PopStyleColor();
 
             ImGui::PopID();
         }
@@ -233,11 +233,21 @@ void MainWindow::draw()
         ImGuiWindowFlags_NoResize   |
         ImGuiWindowFlags_NoMove);
 
-        ImGui::Text("Track %d", selectedTrack + 1);
-        (!sampleLoaded) ? ImGui::Text("(no sample)"): ImGui::Text("Nom du sample");
+        ImGui::Text("Track %d", selectedTrack + 1 );
+    if (!pendingFilePath.empty()) {
+        controller.registerFileName(pendingTrack, pendingFilePath);
+        pendingFilePath.clear();
+    }
 
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
-        if (ImGui::Button("Load sample")) { /* open file dialog */ }
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
+    (snapshot.wavPath[selectedTrack]=="") ? ImGui::Text("(no sample)"): ImGui::Text(getNameOfFile(snapshot.wavPath[selectedTrack]).c_str());
+
+    if (ImGui::Button("Load sample")) {
+        pendingTrack = selectedTrack;
+        SDL_DialogFileFilter filter = {"WAV files", "wav"};
+        SDL_ShowOpenFileDialog(fileDialogCallback, this, window, nullptr, 0, nullptr, false);
+
+    }
         ImGui::PopStyleColor();
 
         ImGui::Checkbox("Reverse", &reverse);
@@ -255,3 +265,25 @@ void MainWindow::draw()
 
     ImGui::End();
 }
+
+
+/**
+ * when the user have chosen a file, its path is registered in a variable
+ * @param userdata
+ * @param filelist
+ */
+void MainWindow::fileDialogCallback(void* userdata, const char* const* filelist, int filter) {
+    auto* self = static_cast<MainWindow*>(userdata);
+    if (filelist && filelist[0]) {
+        self->pendingFilePath = filelist[0];
+    }
+}
+
+std::string MainWindow::getNameOfFile(std::string& path) {
+    int i = path.find_last_of('/');
+    path=path.substr(i+1, path.length());
+    return path;
+}
+
+
+

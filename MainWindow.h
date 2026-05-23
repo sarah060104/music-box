@@ -17,6 +17,13 @@ private:
     SDL_Renderer* renderer { nullptr };
     Controller& controller;
 
+    static void fileDialogCallback(void* userdata, const char* const* filelist, int filter);
+
+    std::string getNameOfFile(std::string &path);
+
+    std::string pendingFilePath;
+    int pendingTrack = 0;
+
 };
 
 #endif //TESTINSTRUCT_MAINWINDOW_H
