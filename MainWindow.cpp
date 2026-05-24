@@ -126,7 +126,7 @@ void MainWindow::draw()
     const int NUM_TRACKS = 4;
     const int NUM_STEPS  = 16;
     static float volumes[NUM_TRACKS]          = {1.0f, 1.0f, 1.0f, 1.0f};
-    static bool  reverse  = false;
+    static bool  reverse[NUM_TRACKS]  ={false, false, false, false} ;
     static bool  delay    = false;
     static float delayTime = 0.0f;
     static float delayMix  = 0.0f;
@@ -258,7 +258,7 @@ void MainWindow::draw()
         ImGui::PopStyleColor();
 
         if (ImGui::Checkbox("Reverse", &reverse[selectedTrack])) {
-            controller.setReverse(selectedTrack, &reverse[selectedTrack]);
+            controller.setReverse(selectedTrack, reverse[selectedTrack]);
         };
         ImGui::Checkbox("Delay",   &delay);
 
