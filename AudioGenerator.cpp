@@ -73,6 +73,10 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
                 engine->players[0].trigger();
             }
         }
+    }else {
+        for (int i = 0; i < 4; i++) {
+            engine->players[i].stop();
+        }
     }
 
     engine->players[0].process(trackBuf, framesPerBuffer);
