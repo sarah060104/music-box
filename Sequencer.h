@@ -4,7 +4,7 @@
 
 
 class Sequencer {
-    std::atomic<int> currentStep = 0;
+    std::atomic<int> currentStep = 1;
     double beatAccum  = 0.0;
 
 
