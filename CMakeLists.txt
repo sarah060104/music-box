@@ -33,6 +33,10 @@ add_executable(bbx-61601 main.cpp
         RhythmBoxParams.h
         Sequencer.cpp
         Sequencer.h
+        Mixer.cpp
+        Mixer.h
+        Delay.cpp
+        Delay.h
 )
 
 find_package(fmt REQUIRED)
