@@ -58,10 +58,7 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
     int newStep = -1;
     if (snapshot.playing) {
         newStep = engine->sequencer.advance(
-        framesPerBuffer, SAMPLE_RATE, snapshot.bpm
-    );
-
-
+        framesPerBuffer, SAMPLE_RATE, snapshot.bpm);
 
         if (newStep != -1) {
             engine->controller.setCurrentStep(newStep);
@@ -70,6 +67,7 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
                 engine->players[0].trigger();
             }
         }
+    }
 
         engine->players[0].process(trackBuf, framesPerBuffer);
 
