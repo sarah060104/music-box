@@ -33,7 +33,6 @@ private:
     bool reverse = false;
     int channels;
 
-    float volume = 1.0f;
 
 };
 
