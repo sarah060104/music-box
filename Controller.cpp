@@ -35,6 +35,11 @@ void Controller::registerFileName(int track, std::string path) {
     params.wavPath[track] = path;
 }
 
+void Controller::setVolume(int track, float vol) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.volumes[track] = vol;
+}
+
 RhythmBoxParams Controller::getRhythmBoxParams() {
     std::lock_guard<std::mutex> lock(mutex);
     return params;  // copie

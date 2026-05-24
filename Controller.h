@@ -18,6 +18,7 @@ public:
     void setMute(int track, bool mute);
     void setCurrentStep(int step);
     void registerFileName(int track, std::string path);
+    void setVolume(int track,float vol );
     RhythmBoxParams getRhythmBoxParams();
 
 };
