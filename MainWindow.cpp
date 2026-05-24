@@ -125,18 +125,13 @@ void MainWindow::draw()
 
     const int NUM_TRACKS = 4;
     const int NUM_STEPS  = 16;
-    static bool  steps[NUM_TRACKS][NUM_STEPS] = {};
     static float volumes[NUM_TRACKS]          = {1.0f, 1.0f, 1.0f, 1.0f};
-    static bool  mutes[NUM_TRACKS]            = {};
     static bool  reverse  = false;
     static bool  delay    = false;
     static float delayTime = 0.0f;
     static float delayMix  = 0.0f;
 
     static int selectedTrack = 0;
-
-    bool sampleLoaded = false; //TODO pointeur sample
-
 
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImVec2(SCREEN_W, SCREEN_H));
