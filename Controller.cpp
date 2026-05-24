@@ -42,6 +42,12 @@ void Controller::setVolume(int track, float vol) {
 
 RhythmBoxParams Controller::getRhythmBoxParams() {
     std::lock_guard<std::mutex> lock(mutex);
-    return params;  // copie
+    return params;
 }
+
+void Controller::setReverse(int track, bool reverse) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.reverse[track] = reverse;
+}
+
 

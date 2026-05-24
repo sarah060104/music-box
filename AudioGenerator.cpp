@@ -69,6 +69,7 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
 
             for (int t = 0; t < 4; t++) {
                 if (snapshot.grid[t][newStep] && !snapshot.muted[t])
+                    engine->players[t].setReverse(snapshot.reverse[t]);
                     engine->players[t].trigger();
             }
         }

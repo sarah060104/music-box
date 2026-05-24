@@ -19,6 +19,7 @@ public:
     void setCurrentStep(int step);
     void registerFileName(int track, std::string path);
     void setVolume(int track,float vol );
+    void setReverse(int track,bool reverse);
     RhythmBoxParams getRhythmBoxParams();
 
 };

@@ -257,7 +257,9 @@ void MainWindow::draw()
     }
         ImGui::PopStyleColor();
 
-        ImGui::Checkbox("Reverse", &reverse);
+        if (ImGui::Checkbox("Reverse", &reverse[selectedTrack])) {
+            controller.setReverse(selectedTrack, &reverse[selectedTrack]);
+        };
         ImGui::Checkbox("Delay",   &delay);
 
         ImGui::PushStyleColor(ImGuiCol_FrameBg,    ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
