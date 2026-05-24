@@ -9,13 +9,10 @@ struct RhythmBoxParams {
     bool playing = false;
     int bpm = 120;
     bool grid[4][16]={};
-    int currentStep = 1;
+    int currentStep = 0;
     std::array<bool, 4> muted ;
     std::array<std::string, 4> wavPath;
 
-
-
 };
-
 
 #endif //BEATBOX_61601_RHYTHMBOXPARAMS_H
