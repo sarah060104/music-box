@@ -9,15 +9,6 @@
 AudioPlayer::AudioPlayer() {
 }
 
-void AudioPlayer::play() {
-    if (buffer.empty()) return;
-
-    playing = true;
-
-
-    position = reverse ? buffer.size() - 1 : 0;
-}
-
 void AudioPlayer::stop() {
     playing = false;
 }
@@ -60,7 +51,7 @@ for (int f = 0; f < numFrames; f++) {
                              : position >= (int)buffer.size() / channels;
         if (ended) {
             position = 0;
-            //playing = false;
+            playing = false;
         }
     }
 }

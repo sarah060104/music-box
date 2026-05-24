@@ -69,7 +69,7 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
         if (newStep != -1) {
             engine->controller.setCurrentStep(newStep);
 
-            if (newStep % 4 == 0) {
+            if (snapshot.grid[0][newStep] &&!snapshot.muted[0]) {
                 engine->players[0].trigger();
             }
         }
