@@ -51,7 +51,13 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
 
     RhythmBoxParams snapshot = engine->controller.getRhythmBoxParams();
 
-
+    for (int i = 0; i < 4; i++) {
+        if (snapshot.wavPath[i] != engine->loadedPaths[i]) {
+            engine->loadedPaths[i] = snapshot.wavPath[i];
+            if (!snapshot.wavPath[i].empty())
+                engine->players[i].loadWav(snapshot.wavPath[i]);
+        }
+    }
 
     float trackBuf[256 * 2] = {};
 
