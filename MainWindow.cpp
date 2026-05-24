@@ -193,10 +193,20 @@ void MainWindow::draw()
             for (int s = 0; s < NUM_STEPS; s++)
             {
                 ImGui::PushID(s);
-                bool active = snapshot.grid[t][s];
-                ImGui::PushStyleColor(ImGuiCol_Button, active
-                    ? ImVec4(1.0f, 0.85f, 0.0f, 1.0f)
-                    : ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
+                bool active    = snapshot.grid[t][s];
+                bool isCurrent = snapshot.playing && (s == snapshot.currentStep);
+
+                ImVec4 stepColor;
+                if (active && isCurrent)
+                    stepColor = ImVec4(1.0f, 1.0f, 0.4f, 1.0f);
+                else if (active)
+                    stepColor = ImVec4(1.0f, 0.85f, 0.0f, 1.0f);
+                else if (isCurrent)
+                    stepColor = ImVec4(0.55f, 0.55f, 0.55f, 1.0f);
+                else
+                    stepColor = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+
+                ImGui::PushStyleColor(ImGuiCol_Button, stepColor);
 
                 if (ImGui::Button("##step", ImVec2(36, 36)))
                    controller.setStep(t, s, !active);

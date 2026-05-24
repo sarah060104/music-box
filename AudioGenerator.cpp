@@ -46,32 +46,39 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
                                   const PaStreamCallbackTimeInfo *timeInfo,
                                   PaStreamCallbackFlags statusFlags,
                                   void *userData) {
-
     auto* engine = static_cast<AudioGenerator*>(userData);  // récupère this
     auto* outB   = static_cast<float*>(outputBuffer);
 
     RhythmBoxParams snapshot = engine->controller.getRhythmBoxParams();
 
 
+
     float trackBuf[256 * 2] = {};
 
-    int newStep = engine->sequencer.advance(
-        framesPerBuffer, SAMPLE_RATE, 90
+    int newStep = -1;
+    if (snapshot.playing) {
+        newStep = engine->sequencer.advance(
+        framesPerBuffer, SAMPLE_RATE, snapshot.bpm
     );
 
-    if (newStep != -1) {
-        if (newStep % 4 == 0) {
-            engine->players[0].trigger();
+
+
+        if (newStep != -1) {
+            engine->controller.setCurrentStep(newStep);
+
+            if (newStep % 4 == 0) {
+                engine->players[0].trigger();
+            }
         }
+
+        engine->players[0].process(trackBuf, framesPerBuffer);
+
+        for (int i = 0; i < (int)framesPerBuffer * 2; i++)
+            outB[i] = trackBuf[i];
+
+        return paContinue;
+
+
     }
-
-    engine->players[0].process(trackBuf, framesPerBuffer);
-
-    for (int i = 0; i < (int)framesPerBuffer * 2; i++)
-        outB[i] = trackBuf[i];
-
-    return paContinue;
-
-
 }
 

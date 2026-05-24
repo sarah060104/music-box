@@ -25,6 +25,11 @@ void Controller::setMute(int track, bool mute) {
     params.muted[track] = mute;
 }
 
+void Controller::setCurrentStep(int step) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.currentStep = step;
+}
+
 void Controller::registerFileName(int track, std::string path) {
     std::lock_guard<std::mutex> lock(mutex);
     params.wavPath[track] = path;

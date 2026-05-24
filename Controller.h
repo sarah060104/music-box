@@ -16,6 +16,7 @@ public:
     void setBpm(int bpm);
     void setStep(int track, int step, bool active);
     void setMute(int track, bool mute);
+    void setCurrentStep(int step);
     void registerFileName(int track, std::string path);
     RhythmBoxParams getRhythmBoxParams();
 
