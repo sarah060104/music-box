@@ -75,14 +75,11 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
         }
     }
 
-        engine->players[0].process(trackBuf, framesPerBuffer);
+    engine->players[0].process(trackBuf, framesPerBuffer);
 
-        for (int i = 0; i < (int)framesPerBuffer * 2; i++)
-            outB[i] = trackBuf[i];
+    for (int i = 0; i < (int)framesPerBuffer * 2; i++)
+        outB[i] = trackBuf[i];
 
-        return paContinue;
-
-
-    }
+    return paContinue;
 }
 
