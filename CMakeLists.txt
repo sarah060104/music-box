@@ -30,7 +30,6 @@ add_executable(bbx-61601 main.cpp
         AudioFileReader.h
         Controller.cpp
         Controller.h
-        RhythmBoxParams.cpp
         RhythmBoxParams.h
         Sequencer.cpp
         Sequencer.h
