@@ -194,17 +194,17 @@ void MainWindow::draw()
             {
                 ImGui::PushID(s);
                 bool active    = snapshot.grid[t][s];
-                bool isCurrent = snapshot.playing && (s == snapshot.currentStep);
+                bool isCurrent = s == snapshot.currentStep;
 
                 ImVec4 stepColor;
                 if (active && isCurrent)
-                    stepColor = ImVec4(1.0f, 1.0f, 0.4f, 1.0f);
+                    stepColor = ImVec4(1.0f, 0.4f, 0.7f, 1.0f);    // actif + courant -> rose
                 else if (active)
-                    stepColor = ImVec4(1.0f, 0.85f, 0.0f, 1.0f);
+                    stepColor = ImVec4(0.2f, 0.8f, 0.3f, 1.0f);    // actif -> vert
                 else if (isCurrent)
-                    stepColor = ImVec4(0.55f, 0.55f, 0.55f, 1.0f);
+                    stepColor = ImVec4(1.0f, 0.85f, 0.0f, 1.0f);   // courant -> jaune
                 else
-                    stepColor = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+                    stepColor = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);    // inactif -> gris
 
                 ImGui::PushStyleColor(ImGuiCol_Button, stepColor);
 
