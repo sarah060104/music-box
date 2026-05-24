@@ -59,30 +59,31 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
         }
     }
 
-    float trackBuf[256 * 2] = {};
-
     int newStep = -1;
     if (snapshot.playing) {
         newStep = engine->sequencer.advance(
-        framesPerBuffer, SAMPLE_RATE, snapshot.bpm);
+            framesPerBuffer, SAMPLE_RATE, snapshot.bpm);
 
         if (newStep != -1) {
             engine->controller.setCurrentStep(newStep);
 
-            if (snapshot.grid[0][newStep] &&!snapshot.muted[0]) {
-                engine->players[0].trigger();
+            for (int t = 0; t < 4; t++) {
+                if (snapshot.grid[t][newStep] && !snapshot.muted[t])
+                    engine->players[t].trigger();
             }
         }
     }else {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++)
             engine->players[i].stop();
-        }
     }
 
-    engine->players[0].process(trackBuf, framesPerBuffer);
-
-    for (int i = 0; i < (int)framesPerBuffer * 2; i++)
-        outB[i] = trackBuf[i];
+    engine->mixer.clear(outB, framesPerBuffer);
+    for (int t = 0; t < 4; t++) {
+        float trackBuf[256 * 2] = {};
+        engine->players[t].process(trackBuf, framesPerBuffer);
+        float gain = snapshot.muted[t] ? 0.0f : 1.0f;
+        engine->mixer.addTrack(trackBuf, outB, framesPerBuffer, gain);
+    }
 
     return paContinue;
 }

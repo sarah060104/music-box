@@ -6,6 +6,7 @@
 
 #include "AudioPlayer.h"
 #include "Controller.h"
+#include "Mixer.h"
 #include "portaudio.h"
 #include "Sequencer.h"
 
@@ -19,6 +20,7 @@ public:
 private:
     Controller& controller;
     std::array<std::string, 4> loadedPaths;
+    Mixer mixer;
     PaStream* stream = nullptr;
     static int audioCallback( const void *inputBuffer, void *outputBuffer,
                               unsigned long framesPerBuffer,
