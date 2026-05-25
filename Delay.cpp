@@ -1,10 +1,11 @@
 #include "Delay.h"
+#include "AudioConstants.h"
 
 #include <algorithm>
 
-constexpr int SAMPLE_RATE       = 44100;
-constexpr int FRAMES_PER_BUFFER = 256;
-constexpr int DELAY_BUFFER      = SAMPLE_RATE;
+using namespace AudioConstants;
+
+constexpr int DELAY_BUFFER = SAMPLE_RATE;
 
 
 Delay::Delay()

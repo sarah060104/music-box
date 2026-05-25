@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "AudioFileReader.h"
+#include "AudioConstants.h"
 
 
 

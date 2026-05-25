@@ -39,6 +39,7 @@ add_executable(bbx-61601 main.cpp
         Delay.h
         Preferences.cpp
         Preferences.h
+        AudioConstants.h
 )
 
 

@@ -132,3 +132,4 @@ venv/
 *.xcuserstate
 *.xcworkspace/
 *.zip
+*.txt

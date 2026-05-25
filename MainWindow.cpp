@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 
 #include "Preferences.h"
+#include "AudioConstants.h"
 #include <iostream>
 #include <thread>
 #include "imgui.h"
@@ -124,8 +125,8 @@ void MainWindow::draw()
     const float PARAMS_W   = 250.0f;
     const float SEQ_W      = SCREEN_W - PARAMS_W;
 
-    const int NUM_TRACKS = 4;
-    const int NUM_STEPS  = 16;
+    const int NUM_TRACKS = AudioConstants::NUM_TRACKS;
+    const int NUM_STEPS  = AudioConstants::NUM_STEPS;
     static float volumes[NUM_TRACKS]          = {1.0f, 1.0f, 1.0f, 1.0f};
     static bool  reverse[NUM_TRACKS]  ={false, false, false, false} ;
     static bool  delay    = false;

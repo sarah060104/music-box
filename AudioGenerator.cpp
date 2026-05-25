@@ -3,19 +3,17 @@
 
 #include "AudioPlayer.h"
 #include "RhythmBoxParams.h"
+#include "AudioConstants.h"
 
-constexpr int FRAMES_PER_BUFFER {256};
-constexpr int SAMPLE_RATE {44100};
+using namespace AudioConstants;
 
 
 AudioGenerator::AudioGenerator(Controller& controller)
     : controller(controller) {}
 
 AudioGenerator::~AudioGenerator() {
-    // Arrête le thread audio AVANT que les objets (controller, players…)
-    // soient détruits, sinon le callback touche de la mémoire libérée -> crash.
     if (stream) {
-        Pa_StopStream(stream);   // bloque jusqu'à la fin du callback en cours
+        Pa_StopStream(stream);
         Pa_CloseStream(stream);
         stream = nullptr;
     }
@@ -90,7 +88,7 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
 
     engine->mixer.clear(outB, framesPerBuffer);
     for (int t = 0; t < 4; t++) {
-        float trackBuf[256 * 2] = {};
+        float trackBuf[FRAMES_PER_BUFFER * 2] = {};
         engine->players[t].process(trackBuf, framesPerBuffer);
 
         if (snapshot.delayActive[t]) {
