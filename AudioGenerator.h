@@ -6,6 +6,7 @@
 
 #include "AudioPlayer.h"
 #include "Controller.h"
+#include "Delay.h"
 #include "Mixer.h"
 #include "portaudio.h"
 #include "Sequencer.h"
@@ -28,6 +29,7 @@ private:
                               PaStreamCallbackFlags statusFlags,
                               void *userData );
     Sequencer sequencer;
+    Delay delay;
 
 
 };

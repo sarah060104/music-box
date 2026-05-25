@@ -30,7 +30,7 @@ void AudioGenerator::init() {
                                        SAMPLE_RATE,
                                        FRAMES_PER_BUFFER,
                                        audioCallback,
-                                        this ); //TODO pointeur vers donnée
+                                        this );
 
 
     errorStream = Pa_StartStream( stream );
@@ -46,7 +46,7 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
                                   const PaStreamCallbackTimeInfo *timeInfo,
                                   PaStreamCallbackFlags statusFlags,
                                   void *userData) {
-    auto* engine = static_cast<AudioGenerator*>(userData);  // récupère this
+    auto* engine = static_cast<AudioGenerator*>(userData);
     auto* outB   = static_cast<float*>(outputBuffer);
 
     RhythmBoxParams snapshot = engine->controller.getRhythmBoxParams();
@@ -59,9 +59,8 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
         }
     }
 
-    int newStep = -1;
     if (snapshot.playing) {
-        newStep = engine->sequencer.advance(
+        int newStep = engine->sequencer.advance(
             framesPerBuffer, SAMPLE_RATE, snapshot.bpm);
 
         if (newStep != -1) {
@@ -84,7 +83,7 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
         float trackBuf[256 * 2] = {};
         engine->players[t].process(trackBuf, framesPerBuffer);
         float gain = snapshot.muted[t] ? 0.0f : snapshot.volumes[t];
-        engine->mixer.addTrack(trackBuf, outB, framesPerBuffer, gain);
+        engine->mixer.process(trackBuf, outB, framesPerBuffer, gain);
     }
 
     return paContinue;
