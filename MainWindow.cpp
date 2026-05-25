@@ -247,7 +247,7 @@ void MainWindow::draw()
     }
 
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
-    (snapshot.wavPath[selectedTrack]=="") ? ImGui::Text("(no sample)"): ImGui::Text(getNameOfFile(snapshot.wavPath[selectedTrack]).c_str());
+    (snapshot.wavPath[selectedTrack]=="") ? ImGui::Text("(no sample)"): ImGui::Text("%s", getNameOfFile(snapshot.wavPath[selectedTrack]).c_str());
 
     if (ImGui::Button("Load sample")) {
         pendingTrack = selectedTrack;
