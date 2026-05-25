@@ -92,6 +92,12 @@ int AudioGenerator::audioCallback(const void *inputBuffer,
     for (int t = 0; t < 4; t++) {
         float trackBuf[256 * 2] = {};
         engine->players[t].process(trackBuf, framesPerBuffer);
+
+        if (snapshot.delayActive[t]) {
+            engine->delay.setDelayTime(snapshot.delayTime[t]);
+            engine->delay.setDelayMix(snapshot.delayMix[t]);
+            engine->delay.process(trackBuf);
+        }
         float gain = snapshot.muted[t] ? 0.0f : snapshot.volumes[t];
         engine->mixer.process(trackBuf, outB, framesPerBuffer, gain);
     }
