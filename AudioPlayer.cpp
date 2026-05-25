@@ -24,7 +24,7 @@ void AudioPlayer::loadWav(const std::string& path) {
 
 void AudioPlayer::trigger() {
     if (buffer.empty()) return;
-    position = reverse ? (int)buffer.size() - 1 : 0;
+    position = reverse ? (int)buffer.size() / channels - 1 : 0;
     playing = true;
 }
 
