@@ -15,8 +15,8 @@ struct RhythmBoxParams {
     std::array<float, 4> volumes= {1.0f, 1.0f, 1.0f, 1.0f};
     std::array<bool, 4> reverse = {};
     std::array<float, 4> delayTime = {0.0f, 0.0f, 0.0f, 0.0f};
-    std::array<float, 4> delayMix = {0.0f, 1.0f, 0.0f, 0.0f};
-    bool delayActive = false;
+    std::array<float, 4> delayMix = {0.0f, 0.0f, 0.0f, 0.0f};
+    std::array<bool, 4> delayActive = {};
 
 
 
