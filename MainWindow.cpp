@@ -289,8 +289,11 @@ void MainWindow::fileDialogCallback(void* userdata, const char* const* filelist,
 }
 
 std::string MainWindow::getNameOfFile(std::string& path) {
-    int i = path.find_last_of('/');
-    path=path.substr(i+1, path.length());
+    int i = path.find_last_of("/\\");
+    if (i != std::string::npos) {
+        path=path.substr(i+1, path.length());
+        return path;
+    }
     return path;
 }
 
