@@ -10,7 +10,6 @@ class Sequencer {
 
 public:
     int advance(int numFrames, int sampleRate, int bpm);
-    int getCurrentStep() const;
 
 
 

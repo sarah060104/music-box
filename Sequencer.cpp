@@ -14,7 +14,5 @@ int Sequencer::advance(int numFrames, int sampleRate, int bpm) {
     }
     return -1;
 }
-int Sequencer::getCurrentStep() const{
-     return currentStep;
-}
+
 

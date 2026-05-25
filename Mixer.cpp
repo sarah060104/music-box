@@ -9,7 +9,7 @@ void Mixer::clear(float* out, int numFrames) {
         out[i] = 0.0f;
 }
 
-void Mixer::addTrack(const float* trackBuf, float* out, int numFrames, float gain) {
+void Mixer::process(const float* trackBuf, float* out, int numFrames, float gain) {
     for (int i = 0; i < numFrames * 2; i++)
         out[i] += trackBuf[i] * gain;
 }
