@@ -37,6 +37,8 @@ add_executable(bbx-61601 main.cpp
         Mixer.h
         Delay.cpp
         Delay.h
+        Preferences.cpp
+        Preferences.h
 )
 
 
