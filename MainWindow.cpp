@@ -1,6 +1,7 @@
 
 #include "MainWindow.h"
 
+#include "Preferences.h"
 #include <iostream>
 #include <thread>
 #include "imgui.h"
@@ -244,6 +245,7 @@ void MainWindow::draw()
     if (!pendingFilePath.empty()) {
         controller.registerFileName(pendingTrack, pendingFilePath);
         pendingFilePath.clear();
+        Preferences::save(controller.getRhythmBoxParams().wavPath);
     }
 
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
