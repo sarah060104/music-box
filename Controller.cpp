@@ -61,7 +61,7 @@ void Controller::setDelayMix(int track, float delayMix) {
 
 void Controller::setDelay(int track,bool active) {
     std::lock_guard<std::mutex> lock(mutex);
-    params.delayActive = active;
+    params.delayActive[track] = active ;
 }
 
 
