@@ -15,6 +15,7 @@ class AudioGenerator {
 public:
     void init();
     AudioGenerator(Controller& controller);
+    ~AudioGenerator();
 
     AudioPlayer players[4];
 

@@ -11,6 +11,17 @@ constexpr int SAMPLE_RATE {44100};
 AudioGenerator::AudioGenerator(Controller& controller)
     : controller(controller) {}
 
+AudioGenerator::~AudioGenerator() {
+    // Arrête le thread audio AVANT que les objets (controller, players…)
+    // soient détruits, sinon le callback touche de la mémoire libérée -> crash.
+    if (stream) {
+        Pa_StopStream(stream);   // bloque jusqu'à la fin du callback en cours
+        Pa_CloseStream(stream);
+        stream = nullptr;
+    }
+    Pa_Terminate();
+}
+
 void AudioGenerator::init() {
 
     PaError errorInit = Pa_Initialize();
@@ -21,7 +32,6 @@ void AudioGenerator::init() {
     }
 
     PaError errorStream;
-    PaStream *stream;
 
     errorStream = Pa_OpenDefaultStream(&stream,
                                        0,
