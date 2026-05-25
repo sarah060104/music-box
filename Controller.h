@@ -20,6 +20,10 @@ public:
     void registerFileName(int track, std::string path);
     void setVolume(int track,float vol );
     void setReverse(int track,bool reverse);
+    void setDelayTime(int track,float delayT);
+    void setDelayMix(int track,float delayMix);
+    void setDelay(int track,bool active);
+
     RhythmBoxParams getRhythmBoxParams();
 
 };

@@ -50,4 +50,18 @@ void Controller::setReverse(int track, bool reverse) {
     params.reverse[track] = reverse;
 }
 
+void Controller::setDelayTime(int track, float delayTime) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.delayTime[track] = delayTime;
+}
+void Controller::setDelayMix(int track, float delayMix) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.delayMix[track] = delayMix;
+}
+
+void Controller::setDelay(int track,bool active) {
+    std::lock_guard<std::mutex> lock(mutex);
+    params.delayActive = active;
+}
+
 

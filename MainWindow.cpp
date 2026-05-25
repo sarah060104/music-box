@@ -128,8 +128,8 @@ void MainWindow::draw()
     static float volumes[NUM_TRACKS]          = {1.0f, 1.0f, 1.0f, 1.0f};
     static bool  reverse[NUM_TRACKS]  ={false, false, false, false} ;
     static bool  delay    = false;
-    static float delayTime = 0.0f;
-    static float delayMix  = 0.0f;
+    static float delayTime [NUM_TRACKS]  = {0.0F, 0.0F, 0.0F, 0.0F};
+    static float delayMix [NUM_TRACKS]  = {0.0F, 0.0F, 0.0F, 0.0F};
 
     static int selectedTrack = 0;
 
@@ -257,17 +257,18 @@ void MainWindow::draw()
     }
         ImGui::PopStyleColor();
 
-        if (ImGui::Checkbox("Reverse", &reverse[selectedTrack])) {
+        if (ImGui::Checkbox("Reverse", &reverse[selectedTrack]))
             controller.setReverse(selectedTrack, reverse[selectedTrack]);
-        };
-        ImGui::Checkbox("Delay",   &delay);
+
+        if (ImGui::Checkbox("Delay",   &delay))
+            controller.setDelay(selectedTrack, delay);
 
         ImGui::PushStyleColor(ImGuiCol_FrameBg,    ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
         ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.2f, 0.4f, 0.8f, 1.0f));
         ImGui::SetNextItemWidth(100);
-        ImGui::SliderFloat("Delay time", &delayTime, 0.0f, 1.0f, "%.3f");
+        ImGui::SliderFloat("Delay time", &delayTime[selectedTrack], 0.0f, 1.0f, "%.3f");
         ImGui::SetNextItemWidth(100);
-        ImGui::SliderFloat("Delay mix",  &delayMix,  0.0f, 1.0f, "%.3f");
+        ImGui::SliderFloat("Delay mix",  &delayMix[selectedTrack],  0.0f, 1.0f, "%.3f");
         ImGui::PopStyleColor(2);
 
     ImGui::End();
