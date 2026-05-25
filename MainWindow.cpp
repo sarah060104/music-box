@@ -128,8 +128,8 @@ void MainWindow::draw()
     static float volumes[NUM_TRACKS]          = {1.0f, 1.0f, 1.0f, 1.0f};
     static bool  reverse[NUM_TRACKS]  ={false, false, false, false} ;
     static bool  delay    = false;
-    static float delayTime [NUM_TRACKS]  = {0.0F, 0.0F, 0.0F, 0.0F};
-    static float delayMix [NUM_TRACKS]  = {0.0F, 0.0F, 0.0F, 0.0F};
+    static float delayTime [NUM_TRACKS]  = {0.0f, 0.0f, 0.0f, 0.0f};
+    static float delayMix [NUM_TRACKS]  = {0.0f, 0.0f, 0.0f, 0.0f};;
 
     static int selectedTrack = 0;
 
