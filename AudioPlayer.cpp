@@ -19,7 +19,7 @@ void AudioPlayer::setReverse(bool reversed) {
 }
 
 void AudioPlayer::loadWav(const std::string& path) {
-    AudioFileReader::loadFile(path, 44100, buffer, channels);
+    AudioFileReader::loadFile(path, AudioConstants::SAMPLE_RATE, buffer, channels);
 }
 
 
