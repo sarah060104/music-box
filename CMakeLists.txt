@@ -39,8 +39,6 @@ add_executable(bbx-61601 main.cpp
         Delay.h
 )
 
-find_package(fmt REQUIRED)
-target_link_libraries( bbx-61601 PRIVATE fmt::fmt)
 
 include_directories( PRIVATE
         "."
