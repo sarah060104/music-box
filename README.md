@@ -1,14 +1,35 @@
-## Premiers pas
+# Music Box
 
-1. Clonez ce dépot git en local.
-2. Dans le dossier raçine du clone, invoquez la commande reprise ci-dessous
-pour intégrer le sous-module Git contenant les librairies précompilées.
+A small C++ step sequencer. Load a WAV sample on each track, activate steps on the grid, and shape the sound with per-track mute, volume and delay.
 
+## Features
+
+- Multiple tracks, each with its own WAV sample
+- Step grid: activate or deactivate a step on each track
+- Per-track mute
+- Per-track volume control
+- Delay effect
+
+## Build
+
+Requirements: a C++17 compiler (e.g. `g++` or `clang++`) [+ any library you use, e.g. SFML, PortAudio, miniaudio].
+
+```bash
+[g++ -std=c++17 *.cpp -o musicbox]
 ```
-$ git submodule update --init libraries
+
+## Run
+
+```bash
+./musicbox [path/to/samples]
 ```
 
-*NOTE:* Ce repo contient un fichier .gitignore limitant les commits git 
-aux fichiers sources. Il est normal d'avoir à recréer les configurations 
-d'exécution dans CLion à la première ouverture du dossier en tant que 
-projet. Il en va probablement de même pour les autres IDE.
+[Explain briefly how to use it: keys, commands, or mouse controls.]
+
+## Demo
+
+[Add a GIF or screenshot here.]
+
+## Project structure
+
+[Optional: list the main files, e.g. `main.cpp`, `track.cpp`, `delay.cpp`.]
